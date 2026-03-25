@@ -20,7 +20,7 @@ When the skill is first triggered and the user hasn't specified a codebase yet, 
 >
 > I'll read through the code, figure out how everything fits together, and generate a beautiful single-page HTML course with animated diagrams, plain-English code explanations, and interactive quizzes. The whole thing runs in your browser — no setup needed.
 
-If the user provides a GitHub link, clone the repo first (`git clone <url> /tmp/<repo-name>`) before starting the analysis. If they say "this codebase" or similar, use the current working directory.
+If the user provides a GitHub link, clone the repo into a writable temporary directory that fits the current OS and sandbox before starting the analysis. Prefer an OS-native temp location (for example `%TEMP%\<repo-name>` on Windows or `/tmp/<repo-name>` on Unix-like systems). If cloning requires network or permission approval, request approval first. If they say "this codebase" or similar, use the current working directory.
 
 ## Who This Is For
 
@@ -104,7 +104,7 @@ These five element types are the backbone of every course. Other interactive ele
 
 ### Phase 3: Build the Course
 
-Generate a single HTML file with embedded CSS and JavaScript. Read `references/design-system.md` for the complete CSS design tokens, typography, and color system. Read `references/interactive-elements.md` for implementation patterns of every interactive element type.
+Generate a single HTML file with embedded CSS and JavaScript. Write it inside the working project unless the user asked for a different location, and give it a clear name such as `codebase-course.html` or a project-specific equivalent. Read `references/design-system.md` for the complete CSS design tokens, typography, and color system. Read `references/interactive-elements.md` for implementation patterns of every interactive element type.
 
 **Build order (task by task):**
 
@@ -124,7 +124,15 @@ Generate a single HTML file with embedded CSS and JavaScript. Read `references/d
 
 ### Phase 4: Review and Open
 
-After generating the course HTML file, open it in the browser for the user to review. Walk them through what was built and ask for feedback on content, design, and interactivity.
+After generating the course HTML file, review it yourself before reporting back. If the environment allows local browser review, open the file and spot-check navigation, layout, quizzes, tooltips, animations, keyboard support, and mobile responsiveness. If browser opening is unavailable or requires approval, do the deepest non-browser verification available and clearly report that limitation along with the output file path.
+
+**Finishing checklist before you report back:**
+- Confirm the course is a single self-contained HTML file
+- Confirm the number of modules fits the codebase complexity (typically 5-8, fewer only when the project is genuinely simple)
+- Confirm every module includes at least one code-to-English translation and at least one quiz
+- Confirm the course includes all mandatory cross-course elements: group chat animation, message/data flow animation, glossary tooltips, quizzes, and translation blocks
+- Confirm the JavaScript is wrapped safely and the page still works when reopened from disk
+- Confirm you either reviewed the page in a browser or explicitly state why that was not possible
 
 ---
 
